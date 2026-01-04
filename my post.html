@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts | Social Platform</title>
+    <link rel="stylesheet" href="home.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Additional styles for My Posts page */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+        
+        .stat-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .my-post-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            grid-column: 1 / -1;
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state h2 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .empty-state p {
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        
+        .post-checkbox {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            width: 20px;
+            height: 20px;
+            z-index: 2;
+        }
+        
+        .bulk-actions {
+            background: #fff8e1;
+            border: 1px solid #ffd54f;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filter-bar {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .filter-select {
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="home.html" class="logo" style="color: white; text-decoration: none;">← Post Application</a>
+                <h2 style="margin: 0; margin-left: 1rem; color: white;">My Posts</h2>
+            </div>
+            <div class="nav-right">
+                <a href="home.html" class="btn btn-secondary">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <!-- <a href="create-post.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Post
+                </a> -->
+                <div class="user-menu">
+                    <span id="userEmail">User</span>
+                    <button id="logoutBtn" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #4f46e5;">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalPosts">0</h3>
+                    <p>Total Posts</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #10b981;">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalViews">-</h3>
+                    <p>Total Views</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #f59e0b;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="lastPost">-</h3>
+                    <p>Last Post</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter and Search Bar -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchPosts" placeholder="Search in your posts...">
+            </div>
+            <div class="filter-options">
+                <select id="categoryFilter" class="filter-select">
+                    <option value="all">All Categories</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Education">Education</option>
+                </select>
+                <select id="sortFilter" class="filter-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="title">Title A-Z</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Bulk Actions Bar -->
+        <div class="bulk-actions" id="bulkActions">
+            <span id="selectedCount">0 posts selected</span>
+            <div>
+                <button id="selectAllBtn" class="btn btn-secondary">Select All</button>
+                <button id="deselectAllBtn" class="btn btn-secondary">Deselect All</button>
+                <button id="deleteSelectedBtn" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
+            </div>
+        </div>
+
+        <!-- Posts Grid -->
+        <div class="posts-container">
+            <div class="posts-grid" id="myPostsGrid">
+                <!-- My posts will be loaded here -->
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                    <h3>Loading your posts...</h3>
+                </div>
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-edit fa-4x"></i>
+                <h2>No Posts Yet</h2>
+                <p>You haven't created any posts yet. Share your thoughts with the community!</p>
+                <a href="create-post.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create Your First Post
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Post Modal -->
+    <div class="modal" id="editPostModal">
+        <div class="modal-content">
+            <h2>Edit Post</h2>
+            <form id="editPostForm">
+                <input type="hidden" id="editPostId" value="">
+                
+                <div class="form-group">
+                    <label for="editPostTitle">Title *</label>
+                    <input type="text" id="editPostTitle" placeholder="Enter post title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPostCategory">Category *</label>
+                    <select id="editPostCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Lifestyle">Lifestyle</option>
+                        <option value="Food">Food & Cooking</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Education">Education</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPostContent">Content *</label>
+                    <textarea id="editPostContent" rows="6" placeholder="Write your post content..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPostImage">Change Image (optional)</label>
+                    <input type="file" id="editPostImage" accept="image/*">
+                    <div id="editImagePreview" class="image-preview"></div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="updatePostBtn">
+                        Update Post
+                    </button>
+                    <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="deletePostBtn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module" src="config.js"></script>
+    <script type="module" src="my post.js"></script>
+</body>
+</html>
