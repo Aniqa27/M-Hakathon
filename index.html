@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login & Sign Up</title>
@@ -29,7 +21,7 @@
       <form id="login-form">
         
         <div class="input-wrapper">
-          <input type="email" id="login-email" placeholder="Username" required>
+          <input type="email" id="login-email" placeholder="Email" required>
           <i class="fa-solid fa-user input-icon"></i>
         </div>
 
@@ -60,7 +52,6 @@
     <div class="popup-box">
       <h2>Sign Up</h2>
       <form id="signup-form">
-        
         <input type="text" id="signup-name" placeholder="Your Name" required>
         <input type="email" id="signup-email" placeholder="Email" required>
         <input type="password" id="signup-password" placeholder="Password" required>
@@ -71,13 +62,24 @@
     </div>
   </div>
 
+  <!-- Add this script back - it handles popup open/close -->
+  <script>
+    // Popup open/close functionality
+    document.getElementById("showSignup").onclick = () => {
+      document.getElementById("popup").style.display = "flex";
+    };
 
-<script>
+    document.getElementById("closePopup").onclick = () => {
+      document.getElementById("popup").style.display = "none";
+    };
 
-</script>
+    // Close popup when clicking outside
+    document.getElementById("popup").onclick = (e) => {
+      if (e.target.id === "popup") {
+        document.getElementById("popup").style.display = "none";
+      }
+    };
+  </script>
 
-
-</body>
-</html>
 </body>
 </html>
